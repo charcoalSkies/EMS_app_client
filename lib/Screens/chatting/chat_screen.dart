@@ -31,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
             color: Colors.red,
           ),
           Container(
-            color: Colors.pink,
+            color: Colors.yellow,
           ),
           Container(
             color: Colors.green,

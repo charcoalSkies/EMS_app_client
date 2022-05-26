@@ -6,8 +6,13 @@ import 'package:rf_radar_03/components/background.dart';
 import 'package:rf_radar_03/constants.dart';
 import 'package:rf_radar_03/components/icons_svg.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreen createState() => _LoginScreen();
+}
+
+class _LoginScreen extends State<LoginScreen> {
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -59,19 +64,31 @@ class LoginScreen extends StatelessWidget {
               height: 60,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: const TextField(
-                style: TextStyle(color: rf_WhiteColor),
+              child: TextField(
+                obscureText: _isObscure,
+                style: const TextStyle(color: rf_WhiteColor),
                 decoration: InputDecoration(
                     labelText: "비밀번호",
-                    enabledBorder: OutlineInputBorder(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      },
+                    ),
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: rf_BorderColor),
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
-                    labelStyle: TextStyle(color: rf_GrayColor, fontSize: 16)),
+                    labelStyle:
+                        const TextStyle(color: rf_GrayColor, fontSize: 16)),
               )),
           SizedBox(height: size.height * 0.1),
           Container(
