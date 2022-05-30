@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rf_radar_03/Screens/chatting/chat_screen.dart';
@@ -5,6 +6,9 @@ import 'package:rf_radar_03/Utilities/routes.dart';
 import 'package:rf_radar_03/components/background.dart';
 import 'package:rf_radar_03/constants.dart';
 import 'package:rf_radar_03/components/icons_svg.dart';
+import 'dio_server.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,6 +17,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreen extends State<LoginScreen> {
   bool _isObscure = true;
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  String _url = "http://10.0.2.2:8000/login";
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +53,10 @@ class _LoginScreen extends State<LoginScreen> {
               height: 60,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: const TextField(
-                style: TextStyle(color: rf_WhiteColor),
-                decoration: InputDecoration(
+              child: TextField(
+                controller: _usernameController,
+                style: const TextStyle(color: rf_WhiteColor),
+                decoration: const InputDecoration(
                     labelText: "소방청 통합 계정",
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: rf_BorderColor),
@@ -66,6 +75,7 @@ class _LoginScreen extends State<LoginScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: TextField(
                 obscureText: _isObscure,
+                controller: _passwordController,
                 style: const TextStyle(color: rf_WhiteColor),
                 decoration: InputDecoration(
                     labelText: "비밀번호",
@@ -103,7 +113,22 @@ class _LoginScreen extends State<LoginScreen> {
                         color: Color(0xffffffff),
                         fontSize: 20),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    print(_usernameController);
+                    print(_passwordController);
+                    var data = {
+                      "id": _usernameController.text,
+                      "pw": _passwordController.text
+                    };
+                    var body = json.encode(data);
+                    http.Response _res = await http.post(Uri.parse(_url),
+                        headers: {"Content-Type": "application/json"},
+                        body: body);
+
+                    print(_res.statusCode);
+                    print(_res.body);
+                    // server.postReq(
+                    //    _usernameController.text, _passwordController.text);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
